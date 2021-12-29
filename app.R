@@ -9,6 +9,10 @@
 
 library(shiny)
 library(shinyjs)
+library(shinymanager)
+library(googlesheets4)
+library(gridExtra)
+library(bp)
 
 # initalize credentials
 source("init_credentials.R")
@@ -17,7 +21,7 @@ source("init_credentials.R")
 source("data_input_module.R")
 
 # Define UI for application that draws a histogram
-ui <- shinymanager::secure_app(
+ui <- secure_app(
   shinyUI(
     uiOutput("ui")
   )
@@ -28,8 +32,8 @@ server <- function(input, output) {
   
   # call the server part
   # check_credentials returns a function to authenticate users
-  res_auth <- shinymanager::secure_server(
-    check_credentials = shinymanager::check_credentials(credentials)
+  res_auth <- secure_server(
+    check_credentials = check_credentials(credentials)
   )
   
   output$auth_output <- renderPrint({
@@ -98,9 +102,9 @@ server <- function(input, output) {
    
    # pull google drive sheet
    bp_df_proc <- eventReactive(input$refresh, {
-      googlesheets4::gs4_auth(cache=".secrets", email="faustolopez110@gmail.com")
-      bp_df <- googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1U3nQXyiIrDMTtts9zjT1d5ra-9k5I2i-fuM0I4Hi4Rc/edit#gid=0")
-      bp_df_proc <- bp::process_data(bp_df,
+      gs4_auth(cache=".secrets", email="faustolopez110@gmail.com")
+      bp_df <- read_sheet("https://docs.google.com/spreadsheets/d/1U3nQXyiIrDMTtts9zjT1d5ra-9k5I2i-fuM0I4Hi4Rc/edit#gid=0")
+      bp_df_proc <- process_data(bp_df,
                    sbp = "systolic",
                    dbp = "diastolic",
                    date_time = "date_time",
