@@ -102,7 +102,7 @@ server <- function(input, output) {
    
    # pull google drive sheet
    bp_df_proc <- eventReactive(input$refresh, {
-      gs4_auth(cache=".secrets", email="faustolopez110@gmail.com")
+      gs4_auth(cache=".secrets", email = TRUE, use_oob = TRUE)
       bp_df <- read_sheet("https://docs.google.com/spreadsheets/d/1U3nQXyiIrDMTtts9zjT1d5ra-9k5I2i-fuM0I4Hi4Rc/edit#gid=0")
       bp_df_proc <- process_data(bp_df,
                    sbp = "systolic",

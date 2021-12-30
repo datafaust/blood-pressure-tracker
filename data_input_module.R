@@ -23,7 +23,7 @@ write_data_server <- function(id) {
     id,
     function(input, output, session) {
       observeEvent(input$submit, {
-        gs4_auth(cache=".secrets", email="faustolopez110@gmail.com")
+        gs4_auth(cache=".secrets", email = TRUE, use_oob = TRUE)
         
         df <- 
           data.frame(
